@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+window.addEventListener("keyup", checker);
+const pass = [];
+const secretCode = "maku";
+
+
+function checker(e){
+  pass.push(e.key);
+  pass.splice(-secretCode.length-1, pass.length - secretCode.length);
+  console.log(pass);
+
+  if(pass.join("").includes(secretCode)){
+    for (let i = 0; i < 10; i++)
+    cornify_add();
+  }
+
+
+}
+
+
+
+
+</script>
+</body>
+</html>

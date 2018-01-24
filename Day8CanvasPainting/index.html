@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 20;
+
+  let isDrawing = 0;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let inc = 1;
+  let bold = 20;
+
+
+  function draw(e){
+
+    if (!isDrawing) return;
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++;
+
+    //little messy but working 
+    hue >= 360 ? hue = 0 : hue;
+    inc === 1 ? bold+=inc : bold+=inc;
+    bold < 50 && bold > 10 ? inc : inc = -inc;
+
+    ctx.lineWidth = bold;
+    //console.log(bold, inc);
+
+  }
+
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = 1;
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+  });
+
+  canvas.addEventListener('mouseout', () => isDrawing = 0);
+  canvas.addEventListener('mouseup', () => isDrawing = 0);
+  canvas.addEventListener('mousemove', draw);
+</script>
+
+<style>
+  html, body {
+    margin:0;
+  }
+</style>
+
+</body>
+</html>
